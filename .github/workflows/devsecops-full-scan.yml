@@ -40,8 +40,11 @@ jobs:
       - uses: open-policy-agent/setup-opa@v2
         with:
           version: latest
-      - name: Run OPA tests
-        run: opa test policies/ -v --format pretty
+      - name: Run OPA policy unit tests
+        run: |
+          echo "Running OPA tests..."
+          opa test policies/ -v --format pretty
+          echo "All OPA tests passed"
 
   security-summary:
     name: Security Gate Summary
@@ -51,6 +54,10 @@ jobs:
     steps:
       - name: Report results
         run: |
-          echo "Secrets: ${{ needs.secrets-detection.result }}"
-          echo "IaC:     ${{ needs.iac-security.result }}"
-          echo "OPA:     ${{ needs.opa-policy-tests.result }}"
+          echo "=============================="
+          echo "DevSecOps Pipeline Results"
+          echo "=============================="
+          echo "Secrets Detection : ${{ needs.secrets-detection.result }}"
+          echo "IaC Security      : ${{ needs.iac-security.result }}"
+          echo "OPA Policy Tests  : ${{ needs.opa-policy-tests.result }}"
+          echo "=============================="
