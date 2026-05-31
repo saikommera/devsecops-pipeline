@@ -1,10 +1,10 @@
 package terraform.aws.tags_test
 
-import data.terraform.aws.tags as tags_policy
+import rego.v1
+import data.terraform.aws.tags
 
-# Test: resource missing tags should be denied
 test_deny_missing_tags if {
-    msgs := tags_policy.deny with input as {
+    msgs := tags.deny with input as {
         "resource_changes": [{
             "address": "aws_instance.web",
             "type": "aws_instance",
@@ -17,9 +17,8 @@ test_deny_missing_tags if {
     count(msgs) > 0
 }
 
-# Test: resource with all required tags should pass
 test_allow_complete_tags if {
-    msgs := tags_policy.deny with input as {
+    msgs := tags.deny with input as {
         "resource_changes": [{
             "address": "aws_instance.web",
             "type": "aws_instance",
